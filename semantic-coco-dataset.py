@@ -108,7 +108,11 @@ def polygonToArr(data,id,image_size,annotations):
         # polyPoints.append(singlePolyPoints)
         category_info ={'id':1,"is_crowd":0}
         # create annotation
-        annotations.append(create_annotation_info(id,id,category_info,singlePolyPoints,image_size))
+        if(len(annotations)==0):
+            newid = 1
+        else :
+            newid = annotations[-1]["id"]+1
+        annotations.append(create_annotation_info(newid,id,category_info,singlePolyPoints,image_size))
     # return polyPoints
 
 # ---------------------------------------------------------------------------------
