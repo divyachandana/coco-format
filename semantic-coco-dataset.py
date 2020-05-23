@@ -34,7 +34,7 @@ CATEGORIES = [
     }
 ]
 
-annotations = []
+# annotations = []
 
 
 
@@ -95,7 +95,7 @@ def create_annotation_info(annotation_id, image_id, category_info, segmentation,
 # ==================================================================================
 
 # ==================================================================================
-def polygonToArr(data,id,image_size):
+def polygonToArr(data,id,image_size,annotations):
     # polyPoints = []
     for poly in data:
         singlePolyPoints = []
@@ -112,8 +112,8 @@ def polygonToArr(data,id,image_size):
     # return polyPoints
 
 # ---------------------------------------------------------------------------------
-def getjson(filenames,name):
-    annotations = []
+def getjson(filenames,name,annotations):
+    # annotations = annotate
     # print(filenames)
     coco_output = {
                 "info": INFO,
@@ -134,7 +134,7 @@ def getjson(filenames,name):
             id = data["_id"]
             img = create_image_info(id, file_name, image_size)
             images.append(img)
-            polygonToArr(data["objects"],id,image_size)
+            polygonToArr(data["objects"],id,image_size,annotations)
     coco_output["images"] = images
     coco_output["annotations"] = annotations
     # print(coco_output)
@@ -151,5 +151,7 @@ training = filenames[int(length/4):length]
 print(length)
 print(len(training))
 print(len(testing))
-getjson(training,"train")
-getjson(testing,"test")
+annotate1 = []
+annotate2 = []
+getjson(training,"train",annotate1)
+getjson(testing,"test",annotate2)
