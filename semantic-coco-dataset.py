@@ -5,7 +5,8 @@ from PIL import Image
 import datetime
 from shapely.geometry import Polygon
 import numpy as np
-
+import os
+import shutil
 
 
 
@@ -134,6 +135,7 @@ def getjson(filenames,name,annotations,id):
             # print(file)
             if(not 'file' in data): continue
             file_name = "a/"+data["file"]
+            shutil.copy(file_name, "images")
             im = Image.open(file_name)
             image_size = im.size
             # id = data["_id"]
@@ -158,7 +160,7 @@ print(len(training))
 print(len(testing))
 annotate1 = []
 annotate2 = []
-id1 = 0
-id2 = 0
+id1 = 1000
+id2 = 100000
 getjson(training,"train",annotate1,id1)
 getjson(testing,"test",annotate2,id2)
