@@ -101,11 +101,18 @@ def polygonToArr(data,id,image_size,annotations):
     for poly in data:
         singlePolyPoints = []
         # print(data["polygon"])
+        i = False
+        firstPoint = []
         for p in poly["polygon"]:
+            if i==False: 
+                firstPoint.append(p["x"])
+                firstPoint.append(p["y"])
+                i = True       
             point = []
             point.append(p["x"])
             point.append(p["y"])        
-            singlePolyPoints.append(point)        
+            singlePolyPoints.append(point)  
+        singlePolyPoints.append(firstPoint)      
         # polyPoints.append(singlePolyPoints)
         category_info ={'id':1,"is_crowd":0}
         # create annotation
@@ -135,7 +142,7 @@ def getjson(filenames,name,annotations,id,folder):
             # print(file)
             if(not 'file' in data): continue
             file_name = "a/"+data["file"]
-            shutil.copy(file_name, folder)
+            # shutil.copy(file_name, folder)
             im = Image.open(file_name)
             image_size = im.size
             # id = data["_id"]
