@@ -117,7 +117,7 @@ def polygonToArr(data,id,image_size,annotations):
     # return polyPoints
 
 # ---------------------------------------------------------------------------------
-def getjson(filenames,name,annotations,id):
+def getjson(filenames,name,annotations,id,folder):
     # annotations = annotate
     # print(filenames)
     coco_output = {
@@ -135,7 +135,7 @@ def getjson(filenames,name,annotations,id):
             # print(file)
             if(not 'file' in data): continue
             file_name = "a/"+data["file"]
-            shutil.copy(file_name, "images")
+            shutil.copy(file_name, folder)
             im = Image.open(file_name)
             image_size = im.size
             # id = data["_id"]
@@ -162,5 +162,7 @@ annotate1 = []
 annotate2 = []
 id1 = 1000
 id2 = 100000
-getjson(training,"train",annotate1,id1)
-getjson(testing,"test",annotate2,id2)
+imagesFolder1 = "train"
+imagesFolder2 = "test"
+getjson(training,"train",annotate1,id1,imagesFolder1)
+getjson(testing,"test",annotate2,id2,imagesFolder2)
