@@ -116,7 +116,7 @@ def polygonToArr(data,id,image_size,annotations):
     # return polyPoints
 
 # ---------------------------------------------------------------------------------
-def getjson(filenames,name,annotations):
+def getjson(filenames,name,annotations,id):
     # annotations = annotate
     # print(filenames)
     coco_output = {
@@ -128,6 +128,7 @@ def getjson(filenames,name,annotations):
             }
     images = []
     for file in filenames:
+        id+=1
         with open(file) as f:
             data = json.load(f)
             # print(file)
@@ -135,8 +136,8 @@ def getjson(filenames,name,annotations):
             file_name = "a/"+data["file"]
             im = Image.open(file_name)
             image_size = im.size
-            id = data["_id"]
-            img = create_image_info(id, file_name, image_size)
+            # id = data["_id"]
+            img = create_image_info(id, data["file"], image_size)
             images.append(img)
             polygonToArr(data["objects"],id,image_size,annotations)
     coco_output["images"] = images
@@ -157,5 +158,7 @@ print(len(training))
 print(len(testing))
 annotate1 = []
 annotate2 = []
-getjson(training,"train",annotate1)
-getjson(testing,"test",annotate2)
+id1 = 0
+id2 = 0
+getjson(training,"train",annotate1,id1)
+getjson(testing,"test",annotate2,id2)
