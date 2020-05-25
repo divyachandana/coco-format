@@ -72,12 +72,21 @@ def create_annotation_info(annotation_id, image_id, category_info, segmentation,
         # print(type(polygon))
         area =polygon.area
         # print(area)
+        original_segmentation = np.concatenate(segmentation)
         segmentation = list(np.concatenate(segmentation))
 
         # # after padding and subtracting 1 we may get -0.5 points in our segmentation
-        bbx =[0 if i < 0 else int(i) for i in list(polygon.bounds)]
-        segmentation = [0 if i < 0 else int(i) for i in segmentation]
-
+        # bbx =[0 if i < 0 else int(i) for i in list(polygon.bounds)]
+        segmentation = [0 if i < 0 else i for i in segmentation]
+        xPoints = original_segmentation[1::2]
+        yPoints = original_segmentation[::2]
+        xmin = min(xPoints)
+        ymin = min(yPoints)
+        xmax = max(xPoints)
+        ymax = max(yPoints)
+        width = xmax-xmin
+        height = ymax-ymin
+        bbx = [xmin,ymin,width,height]
         annotation_info = {
             "id": annotation_id,
             "image_id": image_id,
@@ -112,7 +121,7 @@ def polygonToArr(data,id,image_size,annotations):
             point.append(p["x"])
             point.append(p["y"])        
             singlePolyPoints.append(point)  
-        singlePolyPoints.append(firstPoint)      
+        # singlePolyPoints.append(firstPoint)      
         # polyPoints.append(singlePolyPoints)
         category_info ={'id':1,"is_crowd":0}
         # create annotation
