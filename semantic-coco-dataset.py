@@ -70,23 +70,25 @@ def create_annotation_info(annotation_id, image_id, category_info, segmentation,
         polygon = Polygon(np.squeeze(segmentation))
         # print("-------")
         # print(type(polygon))
-        area =polygon.area
+        area =round(polygon.area,2)
         # print(area)
         original_segmentation = np.concatenate(segmentation)
         segmentation = list(np.concatenate(segmentation))
 
         # # after padding and subtracting 1 we may get -0.5 points in our segmentation
-        # bbx =[0 if i < 0 else int(i) for i in list(polygon.bounds)]
-        segmentation = [0 if i < 0 else int(i) for i in segmentation]
-        xPoints = original_segmentation[1::2]
-        yPoints = original_segmentation[::2]
-        xmin = int(min(xPoints))
-        ymin = int(min(yPoints))
-        xmax = int(max(xPoints))
-        ymax = int(max(yPoints))
-        width = int(xmax-xmin)
-        height = int(ymax-ymin)
-        bbx = [xmin,ymin,width,height]
+        bbx =[0 if i < 0 else round(i,2) for i in list(polygon.bounds)]
+        segmentation = [0 if i < 0 else round(i,2) for i in segmentation]
+        # xPoints = original_segmentation[1::2]
+        # yPoints = original_segmentation[::2]
+        # xmin = int(min(xPoints))
+        # ymin = int(min(yPoints))
+        # xmax = int(max(xPoints))
+        # ymax = int(max(yPoints))
+        # width = int(xmax-xmin)
+        # height = int(ymax-ymin)
+        # bbx = [xmin,ymin,width,height]
+        bbx[2] = round(bbx[2]-bbx[0],2)
+        bbx[3] = round(bbx[3]-bbx[1],2)
         annotation_info = {
             "id": annotation_id,
             "image_id": image_id,
@@ -123,7 +125,7 @@ def polygonToArr(data,id,image_size,annotations):
             singlePolyPoints.append(point)  
         # singlePolyPoints.append(firstPoint)      
         # polyPoints.append(singlePolyPoints)
-        category_info ={'id':1,"is_crowd":0}
+        category_info ={'id':1,"is_crowd":1}
         # create annotation
         if(len(annotations)==0):
             newid = 1
